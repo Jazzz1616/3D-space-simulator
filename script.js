@@ -15,7 +15,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Earth geometry
+// 🌍 Earth geometry
 const geometry = new THREE.SphereGeometry(2, 32, 32);
 
 // Texture (Earth image)
@@ -29,6 +29,33 @@ const material = new THREE.MeshBasicMaterial({ map: texture });
 // Mesh
 const earth = new THREE.Mesh(geometry, material);
 scene.add(earth);
+
+// ⭐ Stars
+const starsGeometry = new THREE.BufferGeometry();
+const starCount = 5000;
+
+const positions = [];
+
+for (let i = 0; i < starCount; i++) {
+  positions.push(
+    (Math.random() - 0.5) * 2000,
+    (Math.random() - 0.5) * 2000,
+    (Math.random() - 0.5) * 2000
+  );
+}
+
+starsGeometry.setAttribute(
+  "position",
+  new THREE.Float32BufferAttribute(positions, 3)
+);
+
+const starsMaterial = new THREE.PointsMaterial({
+  color: 0xffffff,
+  size: 1
+});
+
+const stars = new THREE.Points(starsGeometry, starsMaterial);
+scene.add(stars);
 
 // Position camera
 camera.position.z = 5;
