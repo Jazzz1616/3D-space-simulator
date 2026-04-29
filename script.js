@@ -6,7 +6,7 @@ const camera = new THREE.PerspectiveCamera(
   75,
   window.innerWidth / window.innerHeight,
   0.1,
-  1000
+  2000
 );
 
 // Renderer
@@ -15,25 +15,41 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// 🌍 Earth geometry
-const geometry = new THREE.SphereGeometry(2, 32, 32);
+// ☀️ Light (Sun)
+const light = new THREE.PointLight(0xffffff, 2);
+light.position.set(0, 0, 0);
+scene.add(light);
 
-// Texture (Earth image)
-const texture = new THREE.TextureLoader().load(
+// 🌞 Sun
+const sunGeometry = new THREE.SphereGeometry(3, 32, 32);
+const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+scene.add(sun);
+
+// 🌍 Earth
+const earthGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+const earthTexture = new THREE.TextureLoader().load(
   "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
 );
-
-// Material
-const material = new THREE.MeshBasicMaterial({ map: texture });
-
-// Mesh
-const earth = new THREE.Mesh(geometry, material);
+const earthMaterial = new THREE.MeshStandardMaterial({ map: earthTexture });
+const earth = new THREE.Mesh(earthGeometry, earthMaterial);
 scene.add(earth);
+
+// 🔴 Mars
+const marsGeometry = new THREE.SphereGeometry(1, 32, 32);
+const marsMaterial = new THREE.MeshStandardMaterial({ color: 0xff4500 });
+const mars = new THREE.Mesh(marsGeometry, marsMaterial);
+scene.add(mars);
+
+// 🟡 Venus
+const venusGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+const venusMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc99 });
+const venus = new THREE.Mesh(venusGeometry, venusMaterial);
+scene.add(venus);
 
 // ⭐ Stars
 const starsGeometry = new THREE.BufferGeometry();
 const starCount = 5000;
-
 const positions = [];
 
 for (let i = 0; i < starCount; i++) {
@@ -57,15 +73,28 @@ const starsMaterial = new THREE.PointsMaterial({
 const stars = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(stars);
 
-// Position camera
-camera.position.z = 5;
+// Camera position
+camera.position.z = 20;
 
 // Animation loop
 function animate() {
   requestAnimationFrame(animate);
 
-  // Rotate Earth
-  earth.rotation.y += 0.002;
+  // Time for orbit
+  const time = Date.now() * 0.0005;
+
+  // 🌍 Earth orbit
+  earth.position.x = Math.cos(time) * 10;
+  earth.position.z = Math.sin(time) * 10;
+  earth.rotation.y += 0.01;
+
+  // 🔴 Mars orbit
+  mars.position.x = Math.cos(time * 0.8) * 15;
+  mars.position.z = Math.sin(time * 0.8) * 15;
+
+  // 🟡 Venus orbit
+  venus.position.x = Math.cos(time * 1.2) * 7;
+  venus.position.z = Math.sin(time * 1.2) * 7;
 
   renderer.render(scene, camera);
 }
