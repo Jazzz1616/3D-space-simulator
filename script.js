@@ -20,7 +20,7 @@ const geometry = new THREE.SphereGeometry(2, 32, 32);
 
 // Texture (Earth image)
 const texture = new THREE.TextureLoader().load(
-  "https://threejs.org/examples/textures/earth_atmos_2048.jpg"
+  "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_atmos_2048.jpg"
 );
 
 // Material
