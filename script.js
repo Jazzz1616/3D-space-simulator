@@ -15,14 +15,22 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
+// 🖱️ Mouse controls
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
 // ☀️ Light (Sun)
 const light = new THREE.PointLight(0xffffff, 2);
 light.position.set(0, 0, 0);
 scene.add(light);
 
-// 🌞 Sun
+// 🌞 Sun (glow effect)
 const sunGeometry = new THREE.SphereGeometry(3, 32, 32);
-const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+const sunMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffaa00,
+  emissive: 0xff5500,
+  emissiveIntensity: 1
+});
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
 
@@ -46,6 +54,22 @@ const venusGeometry = new THREE.SphereGeometry(1.2, 32, 32);
 const venusMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc99 });
 const venus = new THREE.Mesh(venusGeometry, venusMaterial);
 scene.add(venus);
+
+// 🪐 Saturn
+const saturnGeometry = new THREE.SphereGeometry(1.2, 32, 32);
+const saturnMaterial = new THREE.MeshStandardMaterial({ color: 0xd2b48c });
+const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+scene.add(saturn);
+
+// 🪐 Saturn Rings
+const ringGeometry = new THREE.RingGeometry(2, 3, 32);
+const ringMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  side: THREE.DoubleSide
+});
+const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+ring.rotation.x = Math.PI / 2;
+saturn.add(ring);
 
 // ⭐ Stars
 const starsGeometry = new THREE.BufferGeometry();
@@ -74,13 +98,12 @@ const stars = new THREE.Points(starsGeometry, starsMaterial);
 scene.add(stars);
 
 // Camera position
-camera.position.z = 20;
+camera.position.z = 25;
 
 // Animation loop
 function animate() {
   requestAnimationFrame(animate);
 
-  // Time for orbit
   const time = Date.now() * 0.0005;
 
   // 🌍 Earth orbit
@@ -96,7 +119,21 @@ function animate() {
   venus.position.x = Math.cos(time * 1.2) * 7;
   venus.position.z = Math.sin(time * 1.2) * 7;
 
+  // 🪐 Saturn orbit
+  saturn.position.x = Math.cos(time * 0.6) * 20;
+  saturn.position.z = Math.sin(time * 0.6) * 20;
+
+  // 🖱️ Update controls
+  controls.update();
+
   renderer.render(scene, camera);
 }
 
 animate();
+
+// 📱 Resize fix
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
