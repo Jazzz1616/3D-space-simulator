@@ -3,27 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <title>3D Space Explorer 🌌</title>
+
+  <!-- Mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+  </style>
 </head>
+
 <body>
 
 <h1 class="title">🌌 3D Space Explorer</h1>
 
-<!-- 3D canvas -->
+<!-- Canvas -->
 <canvas id="space"></canvas>
 
-<!-- ✅ Three.js -->
+<!-- ===== JS LIBRARIES (ORDER MATTERS) ===== -->
+
+<!-- Core Three.js -->
 <script src="https://unpkg.com/three@0.134.0/build/three.min.js"></script>
 
-<!-- ✅ Orbit Controls -->
+<!-- Controls -->
 <script src="https://unpkg.com/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
 
-<!-- 🎬 REQUIRED FOR BLOOM EFFECT -->
+<!-- Post Processing -->
 <script src="https://unpkg.com/three@0.134.0/examples/js/postprocessing/EffectComposer.js"></script>
 <script src="https://unpkg.com/three@0.134.0/examples/js/postprocessing/RenderPass.js"></script>
 <script src="https://unpkg.com/three@0.134.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
 
-<!-- 🚀 Your main script -->
+<!-- Your Script -->
 <script src="script.js"></script>
 
 </body>
