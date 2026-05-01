@@ -193,7 +193,7 @@ function animate() {
 
   controls.update();
 
-  composer.render();
+ renderer.render(scene, camera);
 }
 
 animate();
